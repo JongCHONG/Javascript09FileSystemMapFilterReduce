@@ -41,7 +41,9 @@ function checkVisible(objet) {
     })
     return allVisible
 }
-function findWord(objet, lettre) {
+
+//trouver 
+function findletter(objet, lettre) {
     objet.find(function(element){
         if (element.letter === lettre && element.isVisible === false) {
             element.isVisible = true
@@ -63,11 +65,10 @@ function pendu() {
                 if (err) {
                     console.log(err)
                 }
-                if (findWord(objetWord, res.lettre) === true) {
+                if (findletter(objetWord, res.lettre) === true) {
                     counter--
                     console.log("Il n'y a pas cette lettre dans le mot..");
                 }
-                
                 tiretWord(objetWord)
                 // console.log(objetWord)
                 allVisible = checkVisible(objetWord)
