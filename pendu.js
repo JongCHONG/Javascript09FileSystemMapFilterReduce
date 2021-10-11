@@ -1,9 +1,10 @@
 //Bonus 
 var prompt = require("prompt")
 const randomWordFR = require('random-word-fr')
-var counter = 10
+var counter = 5
 var tiret = []
 var allVisible = false
+var noLetter = false
 
 //recuperer un mot random
 do {
@@ -20,7 +21,7 @@ var objetWord = mysteryWord.map(function(item) {
 //cacher les lettres avec tiret du bas
 function tiretWord(objet) {
     tiret = []
-    var cachelettre = objet.forEach(function(item) {
+    objet.forEach(function(item) { //si le code bug, ajoute var cachelettre devant
         if (item.isVisible === false) {
             tiret = tiret + "_"
         } else {
@@ -40,28 +41,43 @@ function checkVisible(objet) {
     })
     return allVisible
 }
+function findWord(objet, lettre) {
+    objet.find(function(element){
+        if (element.letter === lettre && element.isVisible === false) {
+            element.isVisible = true
+            noLetter = false
+            return true
+        } else {
+            noLetter = true
+        }
+    })
+    return noLetter
+}
 
 prompt.start()  // démarre le prompt
 
 function pendu() {
-    if (allVisible === false) {
-        prompt.get({ name: "lettre", description: `Vous avez ${counter} chances pour trouver le mot ${tiret}` }, function (err, res) { // permet de paramétrer la question
-        if (err) {
-            console.log(err)
-        }
-            objetWord.find(function(element){
-                if (element.letter === res.lettre && element.isVisible === false) {
-                    element.isVisible = true
-                    return true
+    if (counter !== 0) {
+        if (allVisible === false) {
+            prompt.get({ name: "lettre", description: `Vous avez ${counter} chances pour trouver le mot ${tiret}` }, function (err, res) { // permet de paramétrer la question
+                if (err) {
+                    console.log(err)
                 }
+                if (findWord(objetWord, res.lettre) === true) {
+                    counter--
+                    console.log("Il n'y a pas cette lettre dans le mot..");
+                }
+                
+                tiretWord(objetWord)
+                // console.log(objetWord)
+                allVisible = checkVisible(objetWord)
+                pendu()
             })
-            tiretWord(objetWord)
-            console.log(objetWord)
-            allVisible = checkVisible(objetWord)
-            pendu()
-        })
+        } else {
+            console.log("C'est gagné")
+        }
     } else {
-        console.log("c'est gagné")
+        console.log("Vous avez perdu...");
     }
 }
 pendu()
