@@ -55,7 +55,8 @@ console.log("04 - Filter Numbers \n")
 var array = [1, "toto", 34, "javascript", 8]
 
 var numbers = array.filter(function(num){
-    return num !== "toto" && num !== "javascript"
+    // return num !== "toto" && num !== "javascript"
+	return typeof num === "number" //typeof
 })
 console.log(numbers)
 console.log("")
@@ -110,5 +111,5 @@ var rupture = chocolate.map(function (soldout) {
     return {name: soldout.name,
             flavor: soldout.flavor,
             status: "sold out!"}
-})
+}) //...cake c'est la même chose
 console.log(rupture);
